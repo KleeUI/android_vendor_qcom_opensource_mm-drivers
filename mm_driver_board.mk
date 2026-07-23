@@ -10,9 +10,11 @@ endif
 ifeq ($(MM_DRV_DLKM_ENABLE), true)
 	ifneq ($(TARGET_BOARD_AUTO),true)
 		ifeq ($(call is-board-platform-in-list,$(TARGET_BOARD_PLATFORM)),true)
+			ifneq ($(TARGET_QCOM_MSM_EXT_DISPLAY_DLKM), false)
 			BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/msm_ext_display.ko
 			BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/msm_ext_display.ko
 			BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD += $(KERNEL_MODULES_OUT)/msm_ext_display.ko
+			endif
 			ifeq ($(TARGET_BOARD_PLATFORM), parrot)
 				BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko
 				BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko

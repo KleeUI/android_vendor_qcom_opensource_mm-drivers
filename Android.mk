@@ -8,7 +8,9 @@ ifeq ($(TARGET_KERNEL_DLKM_DISABLE), true)
 endif
 
 ifeq ($(MM_DRV_DLKM_ENABLE), true)
+ifneq ($(TARGET_QCOM_MSM_EXT_DISPLAY_DLKM), false)
 	include $(MM_DRIVER_PATH)/msm_ext_display/Android.mk
+endif
 	ifeq ($(TARGET_BOARD_PLATFORM), parrot)
 		include $(MM_DRIVER_PATH)/sync_fence/Android.mk
 	else ifeq ($(filter taro blair, $(TARGET_BOARD_PLATFORM)),)

@@ -1,5 +1,7 @@
 
+ifneq ($(TARGET_QCOM_MSM_EXT_DISPLAY_DLKM), false)
 PRODUCT_PACKAGES += msm_ext_display.ko
+endif
 
 MM_DRV_DLKM_ENABLE := true
 ifeq ($(TARGET_KERNEL_DLKM_DISABLE), true)
