@@ -11,10 +11,19 @@ ifeq ($(TARGET_KERNEL_DLKM_DISABLE), true)
 endif
 
 ifeq ($(MM_DRV_DLKM_ENABLE), true)
-	ifeq ($(TARGET_BOARD_PLATFORM), parrot)
-		PRODUCT_PACKAGES += sync_fence.ko
-	else ifeq ($(filter taro blair, $(TARGET_BOARD_PLATFORM)),)
-		PRODUCT_PACKAGES += sync_fence.ko msm_hw_fence.ko
+	ifneq ($(TARGET_QCOM_SYNC_FENCE_DLKM), false)
+		ifneq ($(filter true parrot,$(TARGET_QCOM_SYNC_FENCE_DLKM) $(TARGET_BOARD_PLATFORM)),)
+			PRODUCT_PACKAGES += sync_fence.ko
+		else ifeq ($(filter taro blair, $(TARGET_BOARD_PLATFORM)),)
+			PRODUCT_PACKAGES += sync_fence.ko
+		endif
+	endif
+	ifneq ($(TARGET_QCOM_HW_FENCE_DLKM), false)
+		ifeq ($(TARGET_QCOM_HW_FENCE_DLKM), true)
+			PRODUCT_PACKAGES += msm_hw_fence.ko
+		else ifeq ($(filter taro blair parrot, $(TARGET_BOARD_PLATFORM)),)
+			PRODUCT_PACKAGES += msm_hw_fence.ko
+		endif
 	endif
 endif
 

@@ -35,6 +35,9 @@ LOCAL_MODULE_KBUILD_NAME  := sync_fence.ko
 LOCAL_MODULE_TAGS         := optional
 LOCAL_MODULE_DEBUG_ENABLE := true
 LOCAL_MODULE_PATH         := $(KERNEL_MODULES_OUT)
+LOCAL_EXPORT_KO_INCLUDE_DIRS := \
+	$(LOCAL_PATH)/include \
+	$(LOCAL_PATH)/include/uapi/sync_fence
 
 include $(DLKM_DIR)/Build_external_kernelmodule.mk
 ###########################################################

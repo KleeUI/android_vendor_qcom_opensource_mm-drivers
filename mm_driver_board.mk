@@ -15,17 +15,27 @@ ifeq ($(MM_DRV_DLKM_ENABLE), true)
 			BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/msm_ext_display.ko
 			BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD += $(KERNEL_MODULES_OUT)/msm_ext_display.ko
 			endif
-			ifeq ($(TARGET_BOARD_PLATFORM), parrot)
-				BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko
-				BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko
-				BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD += $(KERNEL_MODULES_OUT)/sync_fence.ko
-			else ifeq ($(filter taro blair, $(TARGET_BOARD_PLATFORM)),)
-				BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko \
-					       $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
-				BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko \
-					               $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
-				BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD += $(KERNEL_MODULES_OUT)/sync_fence.ko \
-					                             $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
+			ifneq ($(TARGET_QCOM_SYNC_FENCE_DLKM), false)
+				ifneq ($(filter true parrot,$(TARGET_QCOM_SYNC_FENCE_DLKM) $(TARGET_BOARD_PLATFORM)),)
+					BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko
+					BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko
+					BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD += $(KERNEL_MODULES_OUT)/sync_fence.ko
+				else ifeq ($(filter taro blair, $(TARGET_BOARD_PLATFORM)),)
+					BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko
+					BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/sync_fence.ko
+					BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD += $(KERNEL_MODULES_OUT)/sync_fence.ko
+				endif
+			endif
+			ifneq ($(TARGET_QCOM_HW_FENCE_DLKM), false)
+				ifeq ($(TARGET_QCOM_HW_FENCE_DLKM), true)
+					BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
+					BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
+					BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD += $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
+				else ifeq ($(filter taro blair parrot, $(TARGET_BOARD_PLATFORM)),)
+					BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
+					BOARD_VENDOR_RAMDISK_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
+					BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD += $(KERNEL_MODULES_OUT)/msm_hw_fence.ko
+				endif
 			endif
 		endif
 	endif
